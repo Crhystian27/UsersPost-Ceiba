@@ -1,5 +1,6 @@
 package co.com.ceiba.mobile.pruebadeingreso.viewmodel;
 
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import androidx.lifecycle.LiveData;
@@ -22,8 +23,9 @@ public class PostActivityViewModule extends ViewModel {
         this.repository = repository;
     }
 
-    public void fetchPostsInternet(Integer userId) {
-        repository.getPostInternet(userId);
+    public void fetchPostsInternet(Integer userId, RelativeLayout relativeLayout) {
+        relativeLayout.setVisibility(View.VISIBLE);
+        repository.getPostInternet(userId, relativeLayout);
     }
 
     public void fetchPostsDB(Integer userId) {

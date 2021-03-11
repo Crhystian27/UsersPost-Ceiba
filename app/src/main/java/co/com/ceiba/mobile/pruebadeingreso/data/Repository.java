@@ -41,11 +41,16 @@ public class Repository implements RepositoryInterface {
         this.postDao = postDao;
     }
 
-    public void getPostInternet(Integer userId) {
+    public void getPostInternet(Integer userId, RelativeLayout relativeLayout) {
         executor.execute(() -> compositeDisposable.add(apiService.getPosts(userId)
                 .observeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::insertPostDB,
+                .subscribe(postList -> {
+                            new Handler().postDelayed(() -> relativeLayout.setVisibility(View.GONE), 800);
+                            insertPostDB(postList);
+                        },
                         throwable -> {
+                            new Handler().postDelayed(() -> relativeLayout.setVisibility(View.GONE), 800);
+
                         })));
     }
 

@@ -1,6 +1,8 @@
 package co.com.ceiba.mobile.pruebadeingreso.view;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.lifecycle.ViewModelProvider;
@@ -47,8 +49,10 @@ public class PostActivity extends BaseActivity {
         TextView email = findViewById(R.id.email);
         email.setText(user.getEmail());
 
+        RelativeLayout relativeLayout = findViewById(R.id.relativeProgress);
+
         PostActivityViewModule viewModule = ViewModelProviders.of(this, factory).get(PostActivityViewModule.class);
-        viewModule.fetchPostsInternet(user.getId());
+        viewModule.fetchPostsInternet(user.getId(), relativeLayout);
         viewModule.fetchPostsDB(user.getId());
         viewModule.getPostDB().observe(this, this::setRecyclerView);
     }
@@ -59,6 +63,7 @@ public class PostActivity extends BaseActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         TextView empty = findViewById(R.id.empty);
+        empty.setVisibility(View.GONE);
         PostAdapter adapter = new PostAdapter(list, empty);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
